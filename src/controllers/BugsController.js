@@ -2,18 +2,21 @@ import { Auth0Provider } from "@bcwdev/auth0provider";
 import { dbContext } from "../db/DbContext.js";
 import { bugsService } from "../services/BugsService.js";
 import BaseController from "../utils/BaseController.js";
+import { notesService } from "../services/NotesService.js";
 
 
 export class BugsController extends BaseController{
 constructor(){
   super('api/bugs')
-this.router
-.use(Auth0Provider.getAuthorizedUserInfo)
+  this.router
+  .use(Auth0Provider.getAuthorizedUserInfo)
   .post('', this.createBug)
   .get('', this.getBugs)
   .get('/:bugId', this.getBugsById)
   .put('/:bugId', this.editBug)
   .delete('/:bugId', this.squashedBug)
+  
+  .get('/:bugId/notes', this.getNotesByBugId)
 
 
 }
@@ -76,7 +79,17 @@ async squashedBug(request, response, next){
   }
 }
 
+async getNotesByBugId(request, response, next){
+try {
+  const bugId = request.params.bugId
+  const notes = await notesService.getNotesByBugId(bugId)
+  response.send(notes)
+} catch (error) {
+  next(error)
+}
 
+
+}
 
 
 }

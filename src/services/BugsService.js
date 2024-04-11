@@ -44,7 +44,11 @@ class BugsService {
   }
   
 
+// async getNotesByBugId(bugId){
+// const notes = await dbContext.Notes.find({bugId : bugId})
+// return notes
 
+// }
 
 
 

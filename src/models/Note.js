@@ -19,3 +19,12 @@ NoteSchema.virtual('creator', {
 
 
 })
+
+NoteSchema.virtual('bug', {
+  localField:'bugId',
+  ref: 'Bug',
+  foreignField: '_id',
+  justOne: true
+
+
+})

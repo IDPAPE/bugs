@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 import { AccountSchema } from '../models/Account'
 import { ValueSchema } from '../models/Value'
-import { BugSchema } from "../models/bug.js";
 import { NoteSchema } from "../models/Note.js";
+import { BugSchema } from "../models/Bug.js";
+import { TrackedBugSchema } from "../models/TrackedBug.js";
 
 class DbContext {
   Values = mongoose.model('Value', ValueSchema);
@@ -12,7 +13,7 @@ class DbContext {
 
   Notes = mongoose.model('Note', NoteSchema)
 
-  TrackedBugs = mongoose.model('TrackedBug', BugSchema)
+  TrackedBugs = mongoose.model('TrackedBug', TrackedBugSchema)
 }
 
 export const dbContext = new DbContext()
