@@ -9,6 +9,7 @@ constructor(){
   this.router
   .use(Auth0Provider.getAuthorizedUserInfo)
     .post('', this.createTrackedBug)
+    .delete('/:trackedBugId', this.squashedTrackedBug)
 }
 
 async createTrackedBug(request, response, next){
@@ -25,7 +26,17 @@ const createdTrackedBug = await trackedBugsService.createTrackedBug(trackedBugDa
 }
 
 
+async squashedTrackedBug(request, response, next){
+try {
+  const trackedBugId = request.params.trackedBugId
+  const userId = request.userInfo.id
+  const squashedTrackedBug = await trackedBugsService.squashedTrackedBug(trackedBugId, userId)
+  response.send(squashedTrackedBug)
+} catch (error) {
+  next(error)
+}
 
+}
 
 
 

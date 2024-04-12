@@ -1,5 +1,6 @@
 import { Db } from "mongodb"
 import { dbContext } from "../db/DbContext.js"
+import { Forbidden } from "../utils/Errors.js"
 
 
 class BugsService {
@@ -20,8 +21,10 @@ class BugsService {
     return bugs
   }
   
-  async editBug(bugId, bugData) {
+  async editBug(bugId, bugData, userId) {
     const bugToEdit = await dbContext.Bugs.findById(bugId)
+
+    if(userId != bugToEdit.creatorId) throw new Forbidden (`Cannot edit, not yours ${bugToEdit}`)
 
     bugToEdit.title = bugData.title ?? bugToEdit.title
     bugToEdit.description = bugData.description ?? bugToEdit.description

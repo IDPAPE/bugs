@@ -3,6 +3,7 @@ import { dbContext } from "../db/DbContext.js";
 import { bugsService } from "../services/BugsService.js";
 import BaseController from "../utils/BaseController.js";
 import { notesService } from "../services/NotesService.js";
+import { trackedBugsService } from "../services/TrackedBugsService.js";
 
 
 export class BugsController extends BaseController{
@@ -17,7 +18,7 @@ constructor(){
   .delete('/:bugId', this.squashedBug)
   
   .get('/:bugId/notes', this.getNotesByBugId)
-
+  .get('/:bugId/trackedbugs', this.getUsersTrackingBug)
 
 }
 
@@ -59,7 +60,8 @@ async editBug(request, response, next){
   try {
     const bugId = request.params.bugId
     const bugData = request.body
-    const editedBug = await bugsService.editBug(bugId, bugData)
+    const userId = request.userInfo.id
+    const editedBug = await bugsService.editBug(bugId, bugData, userId)
     response.send(editedBug)
   } catch (error) {
     next(error)
@@ -90,6 +92,25 @@ try {
 
 
 }
+
+
+async getUsersTrackingBug(request, response, next){
+  try {
+const bugId = request.params.bugId
+const usersTrackingBug = await trackedBugsService.getUsersTrackingBug(bugId)
+response.send(usersTrackingBug)
+  
+} catch (error) {
+  next(error)
+}
+
+}
+
+
+
+
+
+
 
 
 }

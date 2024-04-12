@@ -1,4 +1,5 @@
 import { dbContext } from "../db/DbContext.js"
+import { Forbidden } from "../utils/Errors.js"
 
 
 
@@ -24,9 +25,11 @@ async getNotesById(noteId) {
   return notes
 }
   
- async deleteNote(noteId) {
+ async deleteNote(noteId, userId) {
 
     const noteToDelete = await dbContext.Notes.findById(noteId)
+    if(noteToDelete.creatorId != userId) throw new Forbidden (`Cannot delete, not yours ${noteToDelete}`)
+
     await noteToDelete.deleteOne()
     return noteToDelete
   }

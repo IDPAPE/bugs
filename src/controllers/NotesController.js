@@ -43,7 +43,8 @@ const note = await notesService.getNotesById(noteId)
 async deleteNote(request, response, next){
   try {
     const noteId = request.params.noteId
-    const deletedNote = await notesService.deleteNote(noteId)
+    const userId = request.userInfo.id
+    const deletedNote = await notesService.deleteNote(noteId, userId)
     response.send(deletedNote)
   } catch (error) {
     next(error)
